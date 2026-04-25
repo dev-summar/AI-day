@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI DAY 2026 - AI Innovation Showcase</title>
+  <style>
+    :root {
+      --cream: #f3efe4;
+      --cream-soft: #f6f0e4;
+      --text-main: #4d3c36;
+      --text-body: #5d4e45;
+      --frame-red: #8f1a2b;
+      --frame-red-2: #bc2a3a;
+      --badge-green: #0c5b36;
+      --shadow: 0 18px 35px rgba(70, 40, 30, 0.2);
+      --pattern-h: repeating-linear-gradient(
+        90deg,
+        #8f1a2b 0 4px,
+        #f8efe0 4px 8px,
+        #bc2a3a 8px 12px,
+        #f8efe0 12px 16px
+      );
+      --pattern-v: repeating-linear-gradient(
+        0deg,
+        #8f1a2b 0 4px,
+        #f8efe0 4px 8px,
+        #bc2a3a 8px 12px,
+        #f8efe0 12px 16px
+      );
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Trebuchet MS", "Gill Sans", "Segoe UI", sans-serif;
+      color: var(--text-main);
+      line-height: 1.55;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(179, 184, 164, 0.44), transparent 34%),
+        radial-gradient(circle at 75% 24%, rgba(185, 190, 164, 0.4), transparent 36%),
+        radial-gradient(circle at 40% 70%, rgba(156, 164, 144, 0.25), transparent 38%),
+        linear-gradient(130deg, #bec2ad, #b2b59f 48%, #adb19b);
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .frame {
+      min-height: 100vh;
+      padding: 18px;
+      position: relative;
+      background:
+        var(--pattern-h) top / 100% 20px no-repeat,
+        var(--pattern-h) bottom / 100% 20px no-repeat,
+        var(--pattern-v) left / 20px 100% no-repeat,
+        var(--pattern-v) right / 20px 100% no-repeat;
+      z-index: 1;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 2px solid rgba(143, 26, 43, 0.55);
+      pointer-events: none;
+    }
+
+    .frame::after {
+      inset: 18px;
+      border: 1px solid rgba(143, 26, 43, 0.4);
+    }
+
+    .corner {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border: 2px solid rgba(143, 26, 43, 0.9);
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #f5e8d8 0 28%, transparent 29% 100%);
+      z-index: 3;
+    }
+
+    .c1 { top: 8px; left: 8px; }
+    .c2 { top: 8px; right: 8px; }
+    .c3 { bottom: 8px; left: 8px; }
+    .c4 { bottom: 8px; right: 8px; }
+
+    .close-mark {
+      position: absolute;
+      top: 11px;
+      right: 18px;
+      font-size: 1.7rem;
+      color: rgba(60, 52, 47, 0.55);
+      line-height: 1;
+      z-index: 4;
+      user-select: none;
+    }
+
+    .side-hangers {
+      position: absolute;
+      top: 118px;
+      bottom: 32px;
+      width: 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .side-hangers.left { left: 26px; }
+    .side-hangers.right { right: 26px; }
+
+    .hanger {
+      display: block;
+      position: relative;
+      background: rgba(246, 240, 228, 0.76);
+      border: 1px solid rgba(154, 47, 58, 0.35);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #5a4338;
+      font-size: 0.77rem;
+      letter-spacing: 0.03em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      box-shadow: 0 6px 12px rgba(58, 36, 28, 0.1);
+      backdrop-filter: blur(2px);
+      text-align: center;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .hanger::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 18px;
+      background: rgba(115, 85, 72, 0.55);
+    }
+
+    .hanger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 18px rgba(58, 36, 28, 0.14);
+      border-color: rgba(126, 34, 42, 0.55);
+      background: rgba(250, 244, 233, 0.94);
+    }
+
+    .hanger.active {
+      border-color: rgba(12, 91, 54, 0.65);
+      background: rgba(226, 242, 234, 0.95);
+      box-shadow: 0 10px 18px rgba(12, 91, 54, 0.15);
+    }
+
+    .side-module {
+      position: absolute;
+      width: 180px;
+      background: rgba(246, 240, 228, 0.78);
+      border: 1px solid rgba(154, 47, 58, 0.35);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 6px 12px rgba(58, 36, 28, 0.1);
+      backdrop-filter: blur(2px);
+      z-index: 2;
+    }
+
+    .side-module.left {
+      left: 26px;
+      top: 362px;
+    }
+
+    .side-module.right {
+      right: 26px;
+      top: 362px;
+    }
+
+    .module-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #6a4d41;
+      text-align: center;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+
+    .tech-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .tech-chip {
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      color: #5a4338;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(154, 47, 58, 0.3);
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 42px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      padding-bottom: 60px;
+    }
+
+    .hero-wrap {
+      padding-top: 0;
+      display: grid;
+      place-items: center;
+      min-height: 88vh;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-stage {
+      position: relative;
+      width: min(780px, 98%);
+      padding-top: 34px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--badge-green);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 26px 12px;
+      font-weight: 800;
+      font-size: clamp(0.8rem, 1.45vw, 1.28rem);
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      text-align: center;
+      white-space: normal;
+      width: min(92vw, 820px);
+      box-shadow: 0 8px 16px rgba(12, 59, 38, 0.25);
+      border: 2px solid #d8f0df;
+      margin-bottom: 0;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    .badge small {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #134f35;
+      color: #fff;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      padding: 1px 10px;
+      border-radius: 4px;
+      border: 1px solid #c8ddce;
+    }
+
+    .badge-text {
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .hero-shell {
+      margin-top: 20px;
+      width: 100%;
+      padding: 6px;
+      background:
+        var(--pattern-h) top / 100% 8px no-repeat,
+        var(--pattern-h) bottom / 100% 8px no-repeat,
+        var(--pattern-v) left / 8px 100% no-repeat,
+        var(--pattern-v) right / 8px 100% no-repeat;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      margin-top: 0;
+      width: 100%;
+      background: var(--cream);
+      border: 2px solid #de9c83;
+      padding: clamp(40px, 4.2vw, 60px) clamp(20px, 5vw, 64px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 2px solid #d69079;
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid #ce816a;
+      pointer-events: none;
+    }
+
+    .ornament {
+      color: #b86a4b;
+      letter-spacing: 7px;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 5.4vw, 3.2rem);
+      color: var(--text-main);
+      margin-bottom: 14px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.18rem, 2.35vw, 1.55rem);
+      margin-bottom: 12px;
+      color: #5b5047;
+    }
+
+    .hero-desc {
+      max-width: 580px;
+      margin: 0 auto 30px;
+      color: #76685f;
+      font-size: clamp(0.96rem, 1.7vw, 1.08rem);
+    }
+
+    .start-btn {
+      border: none;
+      background: #4e2d30;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 14px 30px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(66, 29, 35, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(66, 29, 35, 0.35);
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 0.86rem;
+      color: #aaa093;
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      font-size: 1.45rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .loading.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .loading-text {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      color: #5f5149;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-text.active {
+      opacity: 1;
+    }
+
+    .content {
+      margin-top: 76px;
+    }
+
+    section {
+      margin-bottom: 42px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      margin-bottom: 14px;
+      color: #4a3934;
+      border-bottom: 2px solid #d9b5a4;
+      padding-bottom: 7px;
+      letter-spacing: 0.01em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--cream-soft);
+      border: 1px solid #e8cbbd;
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 4px 10px rgba(87, 58, 40, 0.08);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 18px rgba(87, 58, 40, 0.14);
+    }
+
+    .card h3 {
+      font-size: 1.02rem;
+      color: #3f2f2c;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      color: var(--text-body);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .frame {
+        padding: 14px;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 8px));
+      }
+
+      .hero-wrap { min-height: 76vh; }
+      .hero-stage { width: min(780px, 100%); }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1240px) {
+      .side-hangers,
+      .side-module {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <span class="corner c1" aria-hidden="true"></span>
+    <span class="corner c2" aria-hidden="true"></span>
+    <span class="corner c3" aria-hidden="true"></span>
+    <span class="corner c4" aria-hidden="true"></span>
+    <span class="close-mark" aria-hidden="true">×</span>
+    <aside class="side-hangers left" aria-label="Domain quick links left">
+      <a class="hanger" href="#section-1" data-target="section-1">High-Impact Citizen Services</a>
+      <a class="hanger" href="#section-2" data-target="section-2">Operational MIET Projects</a>
+      <a class="hanger" href="#section-3" data-target="section-3">Healthcare & Life Sciences</a>
+    </aside>
+    <aside class="side-hangers right" aria-label="Domain quick links right">
+      <a class="hanger" href="#section-4" data-target="section-4">Cybersecurity & Emerging Tech</a>
+      <a class="hanger" href="#section-5" data-target="section-5">Agri-Tech & Sustainability</a>
+      <a class="hanger" href="#section-6" data-target="section-6">Smart Infrastructure & Education</a>
+    </aside>
+    <aside class="side-module right" aria-label="Tech stack cloud">
+      <p class="module-title">Tech Stack Cloud</p>
+      <div class="tech-cloud">
+        <span class="tech-chip">LLM</span>
+        <span class="tech-chip">NLP</span>
+        <span class="tech-chip">Computer Vision</span>
+        <span class="tech-chip">IoT</span>
+        <span class="tech-chip">Audio ML</span>
+        <span class="tech-chip">Geospatial AI</span>
+        <span class="tech-chip">Blockchain</span>
+        <span class="tech-chip">AR</span>
+        <span class="tech-chip">Predictive Analytics</span>
+      </div>
+    </aside>
+    <div class="container">
+      <header class="hero-wrap">
+        <div class="hero-stage">
+          <div class="badge"><span class="badge-text">✦ MODEL INSTITUTE OF ENGINEERING AND TECHNOLOGY ✦</span><small>2026</small></div>
+          <div class="hero-shell">
+            <div class="hero-card">
+              <div class="ornament">◈ ◇ ◈</div>
+              <h1 class="hero-title">MIET AI DAY 2026</h1>
+              <p class="hero-subtitle">Model Institute of Engineering and Technology</p>
+              <p class="hero-desc">AI Innovation Showcase</p>
+              <button id="startBtn" class="start-btn">Start Exploring</button>
+              <p class="hint">Click to explore innovative AI projects</p>
+              <div id="loading" class="loading"><span>🤖</span><span>💻</span><span>🧠</span><span>⚙️</span></div>
+              <p id="loadingText" class="loading-text">PROJECTS TO SHOWCASE...</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="content" class="content">
+        <section id="section-1">
+          <h2 class="section-title">I. High-Impact Citizen Services (AIKosh & User-Defined)</h2>
+          <div class="grid">
+            <article class="card"><h3>VakilSetu (LegalTech)</h3><p>A voice-based GPT that classifies legal cases (Criminal/Civil) in regional languages and matches users with rated advocates for introductory (₹500/15min) or emergency assistance calls.</p></article>
+            <article class="card"><h3>ScamRakshak (Cyber-Security)</h3><p>A mobile app detecting phishing messages and "Digital Arrest" calls. Features sender verification, bank legitimacy checks, and a self-improving local AI model to prevent economic losses.</p></article>
+            <article class="card"><h3>SabhaSaar (Gram Sabha AI)</h3><p>Automates the generation of structured minutes and action points from audio/video recordings of village panchayat meetings in 14 Indian languages.</p></article>
+            <article class="card"><h3>Kisan Call Centre Assistant</h3><p>Uses transcripts from the national Kisan Call Centre (AIKosh dataset) to provide instant, offline-capable voice advisories to farmers regarding pests and crops.</p></article>
+            <article class="card"><h3>Virtual Negotiation Assistant</h3><p>An AI tool for MSMEs and individuals to resolve disputes via automated document analysis, outcome prediction, and assisted drafting of settlements.</p></article>
+            <article class="card"><h3>Intelligent Agent Mapping</h3><p>AI-driven tools that automate the onboarding and matching of vendors (MSMEs) to government tenders based on their operational capabilities.</p></article>
+            <article class="card"><h3>COILD Tourism Companion</h3><p>A regional travel assistant using the COILD parallel corpus (AIKosh) to provide high-quality translation and cultural insights for tourists in 18+ Indian languages.</p></article>
+            <article class="card"><h3>Vedic Literature Translator</h3><p>Uses the Sanskrit-Interlingua-Hindi-Kannada dataset (AIKosh) to translate and provide style-insights into ancient Indian texts for modern readers.</p></article>
+            <article class="card"><h3>Geospatial Mineral Mapper</h3><p>Integrates AI with GSI geological maps (Karnataka/Andhra datasets) to predict mineralization zones and assist in mineral exploration.</p></article>
+            <article class="card"><h3>IndicNER Healthcare</h3><p>Uses the IndicNER model (11 languages) to extract critical medical entities from regional language prescriptions and medical notes to digitize rural health records.</p></article>
+          </div>
+        </section>
+
+        <section id="section-2">
+          <h2 class="section-title">II. Operational MIET Projects (Refined)</h2>
+          <div class="grid">
+            <article class="card"><h3>Seedo.AI (Smart Automation)</h3><p>Automates attendance and vehicle tracking (ANPR, overloading) on campus, integrated with mParivahan for safety monitoring.</p></article>
+            <article class="card"><h3>Caretaker.ai (Healthcare)</h3><p>A portable monitoring solution for the elderly that tracks vitals and analyzes behavior patterns to alert caregivers proactively.</p></article>
+            <article class="card"><h3>Crickeye (Sports)</h3><p>An AI cricket coach that uses vision-based analysis to provide feedback on a player's performance and posture.</p></article>
+            <article class="card"><h3>PetPulse (Pet Care)</h3><p>A full life-cycle platform for pet health, licensing, and trade management using RFID, Blockchain, and PetGPT.</p></article>
+            <article class="card"><h3>Sky Netra Simulator</h3><p>A defense-tech simulation for Aad interceptors, optimizing debris fall-away zones in urban areas.</p></article>
+            <article class="card"><h3>Smart Apple Sorter</h3><p>A computer-vision machine for regional farmers to sort apples by quality and size.</p></article>
+            <article class="card"><h3>Pi360 Academic Analytics</h3><p>A data engineering framework for institutional quality tracking and student performance analytics.</p></article>
+            <article class="card"><h3>Smart Bridge Monitor</h3><p>Uses sensor arrays to predict the structural integrity of bridges based on real-time vibration data.</p></article>
+            <article class="card"><h3>Classroom Teaching Effectiveness</h3><p>A CV system that measures student attentiveness (privacy-preserving) to help faculty improve delivery.</p></article>
+            <article class="card"><h3>TLC GPT</h3><p>A custom LLM trained on institutional data to assist new faculty in generating curriculum-aligned content.</p></article>
+          </div>
+        </section>
+
+        <section id="section-3">
+          <h2 class="section-title">III. Healthcare & Life Sciences</h2>
+          <div class="grid">
+            <article class="card"><h3>OSCC Oral Cancer Screening</h3><p>Uses clinical and radiological datasets (AIKosh) to detect early-stage oral cancer from smartphone images.</p></article>
+            <article class="card"><h3>Veda-Fit (Yoga Guru)</h3><p>An AI assistant that checks weight distribution and breathing patterns (via audio ML) for 50+ Yoga asanas.</p></article>
+            <article class="card"><h3>Sleep Apnea Acoustic Detection</h3><p>Analyzes nocturnal breathing sounds to flag potential sleep apnea issues before clinical testing.</p></article>
+            <article class="card"><h3>SAMARTH (Mental Health)</h3><p>An AI screening tool for adolescents to detect neuromotor and mental health issues early.</p></article>
+            <article class="card"><h3>TB Audio-Screening</h3><p>A low-cost tool that uses cough-sound analysis to provide early TB screening in rural areas.</p></article>
+          </div>
+        </section>
+
+        <section id="section-4">
+          <h2 class="section-title">IV. Cybersecurity & Emerging Tech</h2>
+          <div class="grid">
+            <article class="card"><h3>Predictive Zero-Trust Auditor</h3><p>Streams system states into a time-series model to flag unauthorized process mappings before data breaches.</p></article>
+            <article class="card"><h3>Autonomous Multi-Agent Bug Hunter</h3><p>A swarm of AI agents that pulls code from GitHub, scans for vulnerabilities, and suggests automated fixes.</p></article>
+            <article class="card"><h3>Deepfake Voice Detector</h3><p>Protects against voice-cloning scams by analyzing spectral inconsistencies in audio.</p></article>
+            <article class="card"><h3>Blockchain Science (DeSci)</h3><p>A decentralized platform for peer-reviewing research data using Smart Contracts to ensure reproducibility.</p></article>
+            <article class="card"><h3>Sound-wave Offline Payments</h3><p>Enables UPI-like transactions in remote areas without internet via encrypted high-frequency sound waves.</p></article>
+          </div>
+        </section>
+
+        <section id="section-5">
+          <h2 class="section-title">V. Agri-Tech & Sustainability</h2>
+          <div class="grid">
+            <article class="card"><h3>BhuPRAHARI</h3><p>Monitoring rural water bodies (Amrit Sarovars) using geospatial AI and satellite imagery.</p></article>
+            <article class="card"><h3>AI-Powered Crop Insurance</h3><p>Automates crop damage assessment using satellite data for faster farmer payouts.</p></article>
+            <article class="card"><h3>Forest Fire Early Warning</h3><p>A hybrid system using IoT sensors and satellite data to predict Himalayan forest fires.</p></article>
+            <article class="card"><h3>Carbon-Aware Compute Scheduler</h3><p>A "Green AI" tool that shifts heavy compute tasks to times when the energy grid is using renewable sources.</p></article>
+            <article class="card"><h3>Smart Solar Load Balancer</h3><p>Forecasts energy consumption in micro-grids to optimize solar battery distribution.</p></article>
+          </div>
+        </section>
+
+        <section id="section-6">
+          <h2 class="section-title">VI. Smart Infrastructure & Education (New Suggestions)</h2>
+          <div class="grid">
+            <article class="card"><h3>Pothole Detection Agent</h3><p>Uses smartphone sensors on local vehicles to automatically map and report road damage.</p></article>
+            <article class="card"><h3>Zero-Knowledge E-Voting</h3><p>A privacy-preserving voting system for campus elections using ZK-proofs.</p></article>
+            <article class="card"><h3>AR Technical Assistant</h3><p>An AR app that provides step-by-step repair instructions for electronic devices using computer vision.</p></article>
+            <article class="card"><h3>Socratic STEM Tutor</h3><p>A multi-lingual AI tutor that teaches through questioning rather than just giving answers.</p></article>
+            <article class="card"><h3>AI-Proctored Decentralized Exams</h3><p>A secure system for remote exams using eye-tracking and environmental audio analysis.</p></article>
+            <article class="card"><h3>Crowd Lens Campus</h3><p>Real-time safety monitoring for campus gatherings to detect violence or density anomalies.</p></article>
+            <article class="card"><h3>Building Violation Monitor</h3><p>Analyzes satellite imagery to detect unauthorized construction in restricted zones.</p></article>
+            <article class="card"><h3>E-Waste Circular Marketplace</h3><p>Categorizes e-waste components using CV to facilitate recycling and reuse.</p></article>
+            <article class="card"><h3>Digital Twin for Urban Floods</h3><p>Simulates city drainage during rains to optimize emergency response.</p></article>
+            <article class="card"><h3>Kirana Forecasting Agent</h3><p>Predicts inventory needs for local shops based on seasonal trends and local events.</p></article>
+            <article class="card"><h3>AI Music Composer (Indic)</h3><p>Blends modern beats with classical Indian Ragas for student film scoring.</p></article>
+            <article class="card"><h3>Skill-Graph Career Path</h3><p>Generates dynamic skill roadmaps for students based on real-time industry trends and grades.</p></article>
+            <article class="card"><h3>Sign Language to Speech</h3><p>A mobile app translating regional Sign Language gestures into spoken Hindi/English.</p></article>
+            <article class="card"><h3>Industrial IoT Maintenance</h3><p>A predictive pipeline that uses sensor data to foresee industrial machine failures.</p></article>
+            <article class="card"><h3>MSME Tender Matchmaker</h3><p>AI agent that maps small business capabilities to public sector tenders automatically</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const loading = document.getElementById("loading");
+    const loadingText = document.getElementById("loadingText");
+    const content = document.getElementById("content");
+    const sections = document.querySelectorAll("section");
+    const hangers = document.querySelectorAll(".hanger[data-target]");
+
+    startBtn.addEventListener("click", () => {
+      loading.classList.add("active");
+      loadingText.classList.add("active");
+      startBtn.disabled = true;
+      setTimeout(() => {
+        content.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 800);
+      setTimeout(() => {
+        loading.classList.remove("active");
+        loadingText.classList.remove("active");
+      }, 2600);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach((section) => observer.observe(section));
+
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        hangers.forEach((hanger) => {
+          hanger.classList.toggle("active", hanger.dataset.target === id);
+        });
+      });
+    }, { threshold: 0.45 });
+
+    sections.forEach((section) => activeObserver.observe(section));
+  </script>
+</body>
+</html>
